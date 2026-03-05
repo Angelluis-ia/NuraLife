@@ -49,6 +49,19 @@ Opcionalmente puedes indicar puerto:
 
 > Nota: este `.exe` es un script ejecutable para entornos bash (Linux/macOS/WSL).
 
+
+## Deploy en Vercel (fix de 404 NOT_FOUND)
+
+Si Vercel muestra `404: NOT_FOUND`, normalmente es porque la app está en `app/` y no en la raíz.
+
+Este repositorio incluye `vercel.json` para reescribir `/` hacia `app/index.html`.
+
+Pasos:
+
+1. Vuelve a desplegar el último commit.
+2. En Vercel, asegúrate de que **Root Directory** sea la raíz del repo (`.`).
+3. Framework preset: **Other** (sitio estático).
+
 ## Recommended next implementation steps
 
 1. Add testing for `app/main.js` behavior (form + storage).

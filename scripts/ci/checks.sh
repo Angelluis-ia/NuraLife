@@ -12,6 +12,7 @@ required_files=(
   "app/styles.css"
   "app/main.js"
   "run-nuralife.exe"
+  "vercel.json"
 )
 
 for file in "${required_files[@]}"; do
