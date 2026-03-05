@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NuraLife - Check-in diario</title>
+    <link rel="stylesheet" href="./app/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="card">
+        <h1>NuraLife</h1>
+        <p>Primer módulo MVP: check-in diario de bienestar.</p>
+      </header>
+
+      <section class="card" aria-labelledby="checkin-title">
+        <h2 id="checkin-title">¿Cómo te sientes hoy?</h2>
+        <form id="checkin-form" class="form-grid">
+          <label>
+            Energía
+            <input type="range" name="energy" min="1" max="10" value="6" />
+          </label>
+          <label>
+            Estado de ánimo
+            <input type="range" name="mood" min="1" max="10" value="6" />
+          </label>
+          <label>
+            Horas de sueño
+            <input type="number" name="sleep" min="0" max="24" step="0.5" value="7" />
+          </label>
+          <label>
+            Nota rápida
+            <textarea name="note" rows="3" placeholder="Ej: me sentí bien después de caminar 20 min"></textarea>
+          </label>
+          <button type="submit">Guardar check-in</button>
+        </form>
+      </section>
+
+      <section class="card" aria-live="polite">
+        <h2>Resumen actual</h2>
+        <p id="summary-text">Aún no guardas tu check-in de hoy.</p>
+      </section>
+    </main>
+
+    <script type="module" src="./app/main.js"></script>
+  </body>
+</html>

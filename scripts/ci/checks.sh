@@ -8,6 +8,7 @@ required_files=(
   "LICENSE"
   ".env.example"
   ".github/workflows/ci.yml"
+  "index.html"
   "app/index.html"
   "app/styles.css"
   "app/main.js"

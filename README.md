@@ -54,13 +54,14 @@ Opcionalmente puedes indicar puerto:
 
 Si Vercel muestra `404: NOT_FOUND`, normalmente es porque la app está en `app/` y no en la raíz.
 
-Este repositorio incluye `vercel.json` para reescribir `/` hacia `app/index.html`.
+Este repositorio ahora incluye un `index.html` en la raíz (entrada directa para Vercel) y mantiene `app/` para los assets del módulo.
 
 Pasos:
 
 1. Vuelve a desplegar el último commit.
-2. En Vercel, asegúrate de que **Root Directory** sea la raíz del repo (`.`).
+2. En Vercel, deja **Root Directory** vacío (equivale a la raíz del repo) o configúralo a `.`.
 3. Framework preset: **Other** (sitio estático).
+4. Build Command y Output Directory: vacíos para despliegue estático simple.
 
 ## Recommended next implementation steps
 
