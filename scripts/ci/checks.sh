@@ -8,6 +8,10 @@ required_files=(
   "LICENSE"
   ".env.example"
   ".github/workflows/ci.yml"
+  "app/index.html"
+  "app/styles.css"
+  "app/main.js"
+  "run-nuralife.exe"
 )
 
 for file in "${required_files[@]}"; do
@@ -17,9 +21,13 @@ for file in "${required_files[@]}"; do
   fi
 done
 
-# Ensure all shell scripts are executable where expected.
-if [[ -f "scripts/ci/checks.sh" ]] && [[ ! -x "scripts/ci/checks.sh" ]]; then
+if [[ ! -x "scripts/ci/checks.sh" ]]; then
   echo "scripts/ci/checks.sh must be executable"
+  exit 1
+fi
+
+if [[ ! -x "run-nuralife.exe" ]]; then
+  echo "run-nuralife.exe must be executable"
   exit 1
 fi
 

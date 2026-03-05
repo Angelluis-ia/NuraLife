@@ -3,57 +3,45 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NuraLife - Vista previa</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        background: #0f172a;
-        color: #e2e8f0;
-      }
-      .container {
-        max-width: 820px;
-        margin: 48px auto;
-        padding: 24px;
-      }
-      .card {
-        background: #111827;
-        border: 1px solid #334155;
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 16px;
-      }
-      h1 { margin-top: 0; }
-      .status { color: #86efac; font-weight: 700; }
-      code {
-        background: #1f2937;
-        border-radius: 6px;
-        padding: 2px 6px;
-      }
-    </style>
+    <title>NuraLife - Check-in diario</title>
+    <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <main class="container">
-      <section class="card">
+      <header class="card">
         <h1>NuraLife</h1>
-        <p>Vista rápida para comprobar cómo quedó la base del proyecto.</p>
-        <p class="status">Estado: setup inicial listo ✅</p>
+        <p>Primer módulo MVP: check-in diario de bienestar.</p>
+      </header>
+
+      <section class="card" aria-labelledby="checkin-title">
+        <h2 id="checkin-title">¿Cómo te sientes hoy?</h2>
+        <form id="checkin-form" class="form-grid">
+          <label>
+            Energía
+            <input type="range" name="energy" min="1" max="10" value="6" />
+          </label>
+          <label>
+            Estado de ánimo
+            <input type="range" name="mood" min="1" max="10" value="6" />
+          </label>
+          <label>
+            Horas de sueño
+            <input type="number" name="sleep" min="0" max="24" step="0.5" value="7" />
+          </label>
+          <label>
+            Nota rápida
+            <textarea name="note" rows="3" placeholder="Ej: me sentí bien después de caminar 20 min"></textarea>
+          </label>
+          <button type="submit">Guardar check-in</button>
+        </form>
       </section>
 
-      <section class="card">
-        <h2>¿Qué incluye?</h2>
-        <ul>
-          <li>Documentación y guías de contribución</li>
-          <li>Pipeline base de CI</li>
-          <li>Script de validación local (<code>scripts/ci/checks.sh</code>)</li>
-          <li>Plantilla de Pull Request</li>
-        </ul>
-      </section>
-
-      <section class="card">
-        <h2>Siguiente paso recomendado</h2>
-        <p>Elegir stack y crear el primer módulo real de aplicación.</p>
+      <section class="card" aria-live="polite">
+        <h2>Resumen actual</h2>
+        <p id="summary-text">Aún no guardas tu check-in de hoy.</p>
       </section>
     </main>
+
+    <script type="module" src="./main.js"></script>
   </body>
 </html>

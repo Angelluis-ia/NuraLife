@@ -1,25 +1,27 @@
 # Architecture (Initial Baseline)
 
-This project is currently in pre-implementation setup.
+This project now includes a no-dependency frontend MVP served locally with Python HTTP server.
 
 ## Proposed direction
 
-- Keep the repository modular from the start.
-- Separate application code from process/docs.
-- Introduce stack-specific tooling only after stack choice is finalized.
+- **Current MVP stack:** Vanilla HTML/CSS/JS (no external dependencies).
+- Keep repository modular to support later migration to framework stack.
+- Separate app logic (`app/`) from process/docs.
 
-## Suggested future layout
+## Current layout and next target
 
 ```text
+app/
+  index.html
+  main.js
+  styles.css
+
+Target after stack selection:
 apps/
   web/
   api/
 packages/
   shared/
-infra/
-  deployment/
-docs/
-  architecture.md
 ```
 
 ## Decision log starter

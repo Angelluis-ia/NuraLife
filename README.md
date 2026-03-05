@@ -1,13 +1,13 @@
 # NuraLife
 
-NuraLife is currently in its bootstrap phase. This repository now includes a clean project foundation so development can start with consistent standards from day one.
+NuraLife is currently in its bootstrap phase. The repository now includes a first runnable MVP module (daily wellness check-in) on top of the initial project standards.
 
 ## Current status
 
 - ✅ Repository initialized
 - ✅ Contribution and collaboration guidelines added
 - ✅ Baseline CI checks added
-- ⏳ Product code pending
+- ✅ First MVP module available (`app/` check-in diario)
 
 ## Getting started
 
@@ -51,10 +51,10 @@ Opcionalmente puedes indicar puerto:
 
 ## Recommended next implementation steps
 
-1. Define target stack (e.g. Next.js, FastAPI, or Node API).
-2. Create initial app skeleton under a clear folder structure.
-3. Add linter/test commands for the selected stack.
-4. Extend CI to run lint/test/build.
+1. Add testing for `app/main.js` behavior (form + storage).
+2. Split UI into reusable components when migrating to a framework.
+3. Add backend API for persisting check-ins.
+4. Extend CI to run lint/test/build for the selected final stack.
 
 ## Repository structure
 
@@ -75,5 +75,10 @@ Opcionalmente puedes indicar puerto:
 ├── CODE_OF_CONDUCT.md
 ├── CONTRIBUTING.md
 ├── LICENSE
+├── app/
+│   ├── index.html
+│   ├── main.js
+│   └── styles.css
+├── run-nuralife.exe
 └── README.md
 ```
