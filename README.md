@@ -1,13 +1,13 @@
 # NuraLife
 
-NuraLife is currently in its bootstrap phase. The repository now includes a first runnable MVP module (daily wellness check-in) on top of the initial project standards.
+NuraLife is currently in its bootstrap phase. The repository includes a runnable MVP with interactive analysis, wellness score, and personalized improvement tips.
 
 ## Current status
 
 - ✅ Repository initialized
 - ✅ Contribution and collaboration guidelines added
 - ✅ Baseline CI checks added
-- ✅ First MVP module available (`app/` check-in diario)
+- ✅ First MVP module available (`app/`) con análisis interactivo y recomendaciones
 
 ## Getting started
 

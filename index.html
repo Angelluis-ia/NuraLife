@@ -3,42 +3,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NuraLife - Check-in diario</title>
+    <title>NuraLife - Evaluación de Bienestar</title>
     <link rel="stylesheet" href="./app/styles.css" />
   </head>
   <body>
     <main class="container">
-      <header class="card">
+      <header class="hero card">
         <h1>NuraLife</h1>
-        <p>Primer módulo MVP: check-in diario de bienestar.</p>
+        <p>Evalúa tu estado actual y recibe una lectura clara con pasos para mejorar.</p>
       </header>
 
-      <section class="card" aria-labelledby="checkin-title">
-        <h2 id="checkin-title">¿Cómo te sientes hoy?</h2>
-        <form id="checkin-form" class="form-grid">
-          <label>
-            Energía
-            <input type="range" name="energy" min="1" max="10" value="6" />
+      <section class="card">
+        <h2>Datos de hoy</h2>
+        <form id="wellness-form" class="form-grid">
+          <label>Actividad física (0-10)
+            <input type="range" name="activity" min="0" max="10" value="8" />
           </label>
-          <label>
-            Estado de ánimo
-            <input type="range" name="mood" min="1" max="10" value="6" />
+          <label>Horas de sueño
+            <input type="number" name="sleep" min="0" max="12" step="0.5" value="6" />
           </label>
-          <label>
-            Horas de sueño
-            <input type="number" name="sleep" min="0" max="24" step="0.5" value="7" />
+          <label>Calidad nutricional (0-10)
+            <input type="range" name="nutrition" min="0" max="10" value="5" />
           </label>
-          <label>
-            Nota rápida
-            <textarea name="note" rows="3" placeholder="Ej: me sentí bien después de caminar 20 min"></textarea>
+          <label>Estrés percibido (0-10)
+            <input type="range" name="stress" min="0" max="10" value="6" />
           </label>
-          <button type="submit">Guardar check-in</button>
+          <button type="submit">Analizar bienestar</button>
         </form>
       </section>
 
-      <section class="card" aria-live="polite">
-        <h2>Resumen actual</h2>
-        <p id="summary-text">Aún no guardas tu check-in de hoy.</p>
+      <section class="results-grid">
+        <article class="card insight">
+          <p class="eyebrow">EN POCAS PALABRAS</p>
+          <p id="summary-text"></p>
+          <blockquote id="coach-quote" class="quote"></blockquote>
+        </article>
+
+        <aside class="card score-card">
+          <p class="eyebrow">PUNTUACIÓN</p>
+          <p id="score-number" class="score-number">0</p>
+          <div class="bar-track"><div id="score-bar" class="bar-fill"></div></div>
+          <p class="eyebrow">NIVEL DE BIENESTAR</p>
+          <p id="wellness-level" class="level"></p>
+        </aside>
+      </section>
+
+      <section>
+        <h2>Pasos para mejorar</h2>
+        <div id="tips-grid" class="tips-grid"></div>
       </section>
     </main>
 
