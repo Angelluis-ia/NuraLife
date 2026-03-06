@@ -7,7 +7,7 @@ NuraLife is currently in its bootstrap phase. The repository includes a runnable
 - ✅ Repository initialized
 - ✅ Contribution and collaboration guidelines added
 - ✅ Baseline CI checks added
-- ✅ First MVP module available (`app/`) con tema relajante y recomendaciones desde una sola rutina diaria/semanal
+- ✅ First MVP module available (`app/`) con tema relajante, rutina diaria/semanal y resultados visibles solo cuando hay datos
 
 ## Getting started
 

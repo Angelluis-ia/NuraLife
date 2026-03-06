@@ -31,25 +31,33 @@
         </form>
       </section>
 
-      <section class="results-grid">
-        <article class="card insight">
-          <p class="eyebrow">EN POCAS PALABRAS</p>
-          <p id="summary-text"></p>
-          <blockquote id="coach-quote" class="quote"></blockquote>
-        </article>
-
-        <aside class="card score-card">
-          <p class="eyebrow">PUNTUACIÓN</p>
-          <p id="score-number" class="score-number">0</p>
-          <div class="bar-track"><div id="score-bar" class="bar-fill"></div></div>
-          <p class="eyebrow">NIVEL DE BIENESTAR</p>
-          <p id="wellness-level" class="level"></p>
-        </aside>
+      <section id="empty-state" class="card empty-card" aria-live="polite">
+        <p class="eyebrow">AÚN SIN DATOS</p>
+        <h3>Completa tu rutina para ver tu análisis</h3>
+        <p>Cuando escribas tu rutina, verás en esta misma pantalla tu puntuación, resumen y pasos recomendados.</p>
       </section>
 
-      <section>
-        <h2>Pasos para mejorar</h2>
-        <div id="tips-grid" class="tips-grid"></div>
+      <section id="results-section" class="hidden">
+        <div class="results-grid">
+          <article class="card insight">
+            <p class="eyebrow">EN POCAS PALABRAS</p>
+            <p id="summary-text"></p>
+            <blockquote id="coach-quote" class="quote"></blockquote>
+          </article>
+
+          <aside class="card score-card">
+            <p class="eyebrow">PUNTUACIÓN</p>
+            <p id="score-number" class="score-number">0</p>
+            <div class="bar-track"><div id="score-bar" class="bar-fill"></div></div>
+            <p class="eyebrow">NIVEL DE BIENESTAR</p>
+            <p id="wellness-level" class="level"></p>
+          </aside>
+        </div>
+
+        <section>
+          <h2>Pasos para mejorar</h2>
+          <div id="tips-grid" class="tips-grid"></div>
+        </section>
       </section>
     </main>
 

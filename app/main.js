@@ -5,8 +5,10 @@ const scoreNumber = document.querySelector('#score-number');
 const scoreBar = document.querySelector('#score-bar');
 const wellnessLevel = document.querySelector('#wellness-level');
 const tipsGrid = document.querySelector('#tips-grid');
+const resultsSection = document.querySelector('#results-section');
+const emptyState = document.querySelector('#empty-state');
 
-const STORAGE_KEY = 'nuralife.wellness-analysis.v4';
+const STORAGE_KEY = 'nuralife.wellness-analysis.v5';
 
 const hasAny = (text, words) => words.some((word) => text.includes(word));
 
@@ -40,11 +42,6 @@ const evaluateRoutine = ({ routineText, routinePeriod }) => {
   if (hasAny(text, ['ceno tarde', 'poco sueño', 'estrés', 'delivery', 'sentado', 'pantalla'])) {
     alerts.push('hay hábitos que pueden drenar tu energía a medio plazo');
     score -= 12;
-  }
-
-  if (!routineText.trim()) {
-    alerts.push('faltan detalles de rutina para afinar recomendaciones');
-    score -= 15;
   }
 
   if (routinePeriod === 'semanal') {
@@ -116,7 +113,24 @@ const renderTips = (tips) => {
   });
 };
 
+const showResults = () => {
+  resultsSection.classList.remove('hidden');
+  emptyState.classList.add('hidden');
+};
+
+const showEmptyState = () => {
+  resultsSection.classList.add('hidden');
+  emptyState.classList.remove('hidden');
+};
+
 const renderResult = (payload) => {
+  const routineText = (payload.routineText || '').trim();
+
+  if (!routineText) {
+    showEmptyState();
+    return;
+  }
+
   const result = evaluateRoutine(payload);
   summaryText.textContent = result.summary;
   coachQuote.textContent =
@@ -129,6 +143,7 @@ const renderResult = (payload) => {
   wellnessLevel.textContent = result.level;
 
   renderTips(result.tips);
+  showResults();
 };
 
 const loadSaved = () => {
@@ -150,16 +165,20 @@ form.addEventListener('submit', (event) => {
     routineText: String(data.get('routineText') || '').trim(),
     savedAt: new Date().toISOString()
   };
+
+  if (!payload.routineText) {
+    localStorage.removeItem(STORAGE_KEY);
+    showEmptyState();
+    return;
+  }
+
   save(payload);
   renderResult(payload);
 });
 
 const saved = loadSaved();
-if (saved) {
+if (saved && saved.routineText && saved.routineText.trim()) {
   renderResult(saved);
 } else {
-  renderResult({
-    routinePeriod: 'diaria',
-    routineText: 'Trabajo en oficina y paso bastante tiempo sentado; quiero mejorar descanso y energía.'
-  });
+  showEmptyState();
 }
