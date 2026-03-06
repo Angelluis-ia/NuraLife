@@ -6,85 +6,99 @@ const scoreBar = document.querySelector('#score-bar');
 const wellnessLevel = document.querySelector('#wellness-level');
 const tipsGrid = document.querySelector('#tips-grid');
 
-const STORAGE_KEY = 'nuralife.wellness-analysis.v3';
+const STORAGE_KEY = 'nuralife.wellness-analysis.v4';
 
 const hasAny = (text, words) => words.some((word) => text.includes(word));
 
 const getLevel = (score) => {
-  if (score >= 80) return 'Alto';
-  if (score >= 60) return 'Medio';
-  return 'Base';
+  if (score >= 80) return 'Equilibrado';
+  if (score >= 60) return 'En progreso';
+  return 'Por construir';
 };
 
-const composeSummary = ({ activity, sleep, nutrition, stress, dailyRoutine, weeklyRoutine }) => {
+const evaluateRoutine = ({ routineText, routinePeriod }) => {
+  const text = routineText.toLowerCase();
+  let score = 70;
   const strengths = [];
-  const risks = [];
-  const routineText = `${dailyRoutine} ${weeklyRoutine}`.toLowerCase();
+  const alerts = [];
 
-  if (activity >= 7) strengths.push('tu actividad física es sólida y consistente');
-  else risks.push('te falta constancia de movimiento semanal');
-
-  if (sleep >= 7) strengths.push('tu recuperación por sueño está bien encaminada');
-  else risks.push('el descanso insuficiente está limitando tu recuperación');
-
-  if (nutrition >= 7) strengths.push('la calidad de tu nutrición está aportando energía estable');
-  else risks.push('tu nutrición necesita más densidad nutricional y menos ultraprocesado');
-
-  if (stress <= 4) strengths.push('estás gestionando bien el estrés diario');
-  else risks.push('el estrés elevado puede drenar energía y foco');
-
-  if (routineText.trim()) {
-    strengths.push('el análisis considera tu rutina real diaria/semanal');
+  if (hasAny(text, ['caminar', 'entreno', 'gym', 'movilidad', 'deporte'])) {
+    strengths.push('incluyes movimiento en tu rutina');
+    score += 8;
   }
 
-  return `Tu punto fuerte: ${strengths.join(', ')}. A vigilar: ${risks.join(', ')}.`;
-};
-
-const buildTips = ({ sleep, nutrition, stress, activity, dailyRoutine, weeklyRoutine }) => {
-  const tips = [];
-  const routineText = `${dailyRoutine} ${weeklyRoutine}`.toLowerCase();
-
-  if (sleep < 7) {
-    tips.push({ level: 'MEDIO', area: 'SALUD', title: 'Optimización del Sueño', body: 'Sube tu descanso en bloques de 20-30 min por semana hasta llegar a 7-8 horas.' });
+  if (hasAny(text, ['verdura', 'fruta', 'cocino', 'proteína', 'hidrato'])) {
+    strengths.push('hay señales de alimentación más consciente');
+    score += 6;
   }
 
-  if (nutrition < 7) {
-    tips.push({ level: 'MEDIO', area: 'SALUD', title: 'Regla del 80/20 en Nutrición', body: 'Prioriza comidas completas con proteína, fibra y vegetales en el 80% de tus ingestas.' });
+  if (hasAny(text, ['duermo', 'descanso', 'desconexión', 'meditación'])) {
+    strengths.push('estás cuidando momentos de recuperación');
+    score += 6;
   }
 
-  if (stress > 5) {
-    tips.push({ level: 'FÁCIL', area: 'PRODUCTIVIDAD', title: 'Pausa de Descarga', body: 'Haz 5 minutos de respiración o caminata suave al cerrar bloques intensos de trabajo.' });
+  if (hasAny(text, ['ceno tarde', 'poco sueño', 'estrés', 'delivery', 'sentado', 'pantalla'])) {
+    alerts.push('hay hábitos que pueden drenar tu energía a medio plazo');
+    score -= 12;
   }
 
-  if (activity < 6) {
-    tips.push({ level: 'FÁCIL', area: 'SALUD', title: 'Movimiento Diario Mínimo', body: 'Asegura 20 minutos de caminata o entrenamiento ligero para mantener inercia.' });
+  if (!routineText.trim()) {
+    alerts.push('faltan detalles de rutina para afinar recomendaciones');
+    score -= 15;
   }
 
-  if (hasAny(routineText, ['gimnasio', 'gym', 'fuerza', 'crossfit'])) {
-    tips.push({ level: 'MEDIO', area: 'RECUPERACIÓN', title: 'Descarga Post-Entreno', body: 'Incluye 20-30g de proteína y una ventana fija de sueño tras días de fuerza para mejorar recuperación.' });
+  if (routinePeriod === 'semanal') {
+    strengths.push('tu visión semanal permite planificar mejor');
+    score += 4;
   }
 
-  if (hasAny(routineText, ['correr', 'running', 'cardio', 'futbol', 'baloncesto', 'partido'])) {
-    tips.push({ level: 'FÁCIL', area: 'RENDIMIENTO', title: 'Hidratación y Electrolitos', body: 'Planifica hidratación antes y después de sesiones intensas para reducir fatiga acumulada.' });
+  const normalized = Math.max(0, Math.min(100, score));
+
+  const summary = `De tu rutina ${routinePeriod}, destaca que ${strengths.join(', ') || 'tienes margen claro para construir hábitos base'}. También ${alerts.join(', ') || 'mantienes una base estable y sostenible'}.`;
+
+  const tips = [
+    {
+      level: 'FÁCIL',
+      area: 'BIENESTAR',
+      title: 'Ancla un hábito mínimo diario',
+      body: 'Elige una acción de 10 minutos (caminar, respiración o estiramientos) y repítela a la misma hora.'
+    },
+    {
+      level: 'MEDIO',
+      area: 'PLANIFICACIÓN',
+      title: 'Diseña tu semana en bloques',
+      body: 'Reserva en calendario momentos para comida, descanso y movimiento. Lo que se agenda, se cumple mejor.'
+    }
+  ];
+
+  if (hasAny(text, ['sentado', 'oficina', 'pantalla'])) {
+    tips.push({
+      level: 'FÁCIL',
+      area: 'ENERGÍA',
+      title: 'Micropausas de 3 minutos',
+      body: 'Cada 60-90 minutos, levántate y mueve cuello/cadera para reducir fatiga física y mental.'
+    });
   }
 
-  if (hasAny(routineText, ['noche', 'turno', 'turnos', 'madrugada'])) {
-    tips.push({ level: 'MEDIO', area: 'SUEÑO', title: 'Protocolo para Turnos', body: 'Usa una rutina de desconexión fija y evita pantallas 45 minutos antes de dormir, aunque sea de día.' });
+  if (hasAny(text, ['ceno tarde', 'delivery', 'ultraprocesado'])) {
+    tips.push({
+      level: 'MEDIO',
+      area: 'NUTRICIÓN',
+      title: 'Cena simple y predecible',
+      body: 'Prepara 2-3 cenas base por semana para evitar decisiones impulsivas al final del día.'
+    });
   }
 
-  if (hasAny(routineText, ['sentado', 'oficina', 'ordenador', 'computadora'])) {
-    tips.push({ level: 'FÁCIL', area: 'PRODUCTIVIDAD', title: 'Micropausas de Movilidad', body: 'Cada 60-90 minutos, haz 2-3 minutos de movilidad cervical y cadera para reducir rigidez.' });
+  if (hasAny(text, ['estrés', 'ansiedad', 'saturado'])) {
+    tips.push({
+      level: 'FÁCIL',
+      area: 'CALMA',
+      title: 'Cierre del día en 5 minutos',
+      body: 'Antes de dormir, haz respiración lenta + lista corta de pendientes para liberar carga mental.'
+    });
   }
 
-  if (hasAny(routineText, ['comidas fuera', 'delivery', 'ultraprocesado', 'ceno tarde'])) {
-    tips.push({ level: 'MEDIO', area: 'NUTRICIÓN', title: 'Planificación Anticipada', body: 'Deja 2 comidas base preparadas por adelantado para bajar decisiones impulsivas al final del día.' });
-  }
-
-  if (tips.length < 3) {
-    tips.push({ level: 'FÁCIL', area: 'SALUD', title: 'Monitoreo de Recuperación', body: 'Registra energía y calidad de sueño durante 2 semanas para detectar patrones.' });
-  }
-
-  return tips.slice(0, 6);
+  return { score: normalized, level: getLevel(normalized), summary, tips: tips.slice(0, 6) };
 };
 
 const renderTips = (tips) => {
@@ -103,27 +117,18 @@ const renderTips = (tips) => {
 };
 
 const renderResult = (payload) => {
-  const score = Math.round(
-    payload.activity * 3 +
-      Math.min(payload.sleep, 8) * 5 +
-      payload.nutrition * 3 +
-      (10 - payload.stress) * 2
-  );
-
-  const normalizedScore = Math.max(0, Math.min(100, score));
-  const level = getLevel(normalizedScore);
-
-  summaryText.textContent = composeSummary(payload);
+  const result = evaluateRoutine(payload);
+  summaryText.textContent = result.summary;
   coachQuote.textContent =
-    normalizedScore >= 70
-      ? '“Tienes una buena base: afina 1-2 hábitos de tu rutina real y tu siguiente salto será notable.”'
-      : '“Tu progreso depende de pequeños hábitos diarios. Prioriza sueño, comida real y control del estrés esta semana.”';
+    result.score >= 70
+      ? '“Vas por buen camino. No busques perfección: busca constancia amable con tu ritmo real.”'
+      : '“Empieza pequeño y estable. Tu bienestar mejora más por repetición que por intensidad.”';
 
-  scoreNumber.textContent = String(normalizedScore);
-  scoreBar.style.width = `${normalizedScore}%`;
-  wellnessLevel.textContent = level;
+  scoreNumber.textContent = String(result.score);
+  scoreBar.style.width = `${result.score}%`;
+  wellnessLevel.textContent = result.level;
 
-  renderTips(buildTips(payload));
+  renderTips(result.tips);
 };
 
 const loadSaved = () => {
@@ -141,12 +146,8 @@ form.addEventListener('submit', (event) => {
   event.preventDefault();
   const data = new FormData(form);
   const payload = {
-    activity: Number(data.get('activity')),
-    sleep: Number(data.get('sleep')),
-    nutrition: Number(data.get('nutrition')),
-    stress: Number(data.get('stress')),
-    dailyRoutine: String(data.get('dailyRoutine') || '').trim(),
-    weeklyRoutine: String(data.get('weeklyRoutine') || '').trim(),
+    routinePeriod: String(data.get('routinePeriod') || 'diaria'),
+    routineText: String(data.get('routineText') || '').trim(),
     savedAt: new Date().toISOString()
   };
   save(payload);
@@ -157,5 +158,8 @@ const saved = loadSaved();
 if (saved) {
   renderResult(saved);
 } else {
-  renderResult({ activity: 8, sleep: 6, nutrition: 5, stress: 6, dailyRoutine: '', weeklyRoutine: '' });
+  renderResult({
+    routinePeriod: 'diaria',
+    routineText: 'Trabajo en oficina y paso bastante tiempo sentado; quiero mejorar descanso y energía.'
+  });
 }

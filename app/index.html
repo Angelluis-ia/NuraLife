@@ -3,38 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NuraLife - Evaluación de Bienestar</title>
+    <title>NuraLife - Rutina consciente</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <main class="container">
       <header class="hero card">
         <h1>NuraLife</h1>
-        <p>Evalúa tu estado actual y recibe una lectura clara con pasos para mejorar.</p>
+        <p>Un espacio tranquilo para transformar tu rutina en bienestar.</p>
       </header>
 
       <section class="card">
-        <h2>Datos de hoy</h2>
+        <h2>Tu rutina (diaria o semanal)</h2>
         <form id="wellness-form" class="form-grid">
-          <label>Actividad física (0-10)
-            <input type="range" name="activity" min="0" max="10" value="8" />
+          <label>Frecuencia de la rutina
+            <select name="routinePeriod">
+              <option value="diaria">Diaria</option>
+              <option value="semanal">Semanal</option>
+            </select>
           </label>
-          <label>Horas de sueño
-            <input type="number" name="sleep" min="0" max="12" step="0.5" value="6" />
+
+          <label class="full-width">Describe tu rutina
+            <textarea name="routineText" rows="5" placeholder="Ej: Trabajo sentado gran parte del día, ceno tarde y entreno 3 veces por semana..."></textarea>
           </label>
-          <label>Calidad nutricional (0-10)
-            <input type="range" name="nutrition" min="0" max="10" value="5" />
-          </label>
-          <label>Estrés percibido (0-10)
-            <input type="range" name="stress" min="0" max="10" value="6" />
-          </label>
-          <label class="full-width">Rutina diaria (opcional)
-            <textarea name="dailyRoutine" rows="3" placeholder="Ej: entreno fuerza por la mañana, trabajo sentado y ceno tarde"></textarea>
-          </label>
-          <label class="full-width">Rutina semanal (opcional)
-            <textarea name="weeklyRoutine" rows="3" placeholder="Ej: 4 días de gym, 1 partido, fines de semana con comidas fuera"></textarea>
-          </label>
-          <button type="submit">Analizar bienestar</button>
+
+          <button type="submit">Generar recomendaciones</button>
         </form>
       </section>
 
