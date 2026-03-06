@@ -29,7 +29,9 @@ body {
 
 .form-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
 label { display: grid; gap: 6px; font-weight: 600; font-size: .92rem; }
-input, button {
+input,
+textarea,
+button {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -93,4 +95,14 @@ button {
   .results-grid,
   .tips-grid,
   .form-grid { grid-template-columns: 1fr; }
+}
+
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 86px;
 }

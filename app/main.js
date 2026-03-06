@@ -6,7 +6,9 @@ const scoreBar = document.querySelector('#score-bar');
 const wellnessLevel = document.querySelector('#wellness-level');
 const tipsGrid = document.querySelector('#tips-grid');
 
-const STORAGE_KEY = 'nuralife.wellness-analysis.v2';
+const STORAGE_KEY = 'nuralife.wellness-analysis.v3';
+
+const hasAny = (text, words) => words.some((word) => text.includes(word));
 
 const getLevel = (score) => {
   if (score >= 80) return 'Alto';
@@ -14,9 +16,10 @@ const getLevel = (score) => {
   return 'Base';
 };
 
-const composeSummary = ({ activity, sleep, nutrition, stress }) => {
+const composeSummary = ({ activity, sleep, nutrition, stress, dailyRoutine, weeklyRoutine }) => {
   const strengths = [];
   const risks = [];
+  const routineText = `${dailyRoutine} ${weeklyRoutine}`.toLowerCase();
 
   if (activity >= 7) strengths.push('tu actividad física es sólida y consistente');
   else risks.push('te falta constancia de movimiento semanal');
@@ -30,11 +33,16 @@ const composeSummary = ({ activity, sleep, nutrition, stress }) => {
   if (stress <= 4) strengths.push('estás gestionando bien el estrés diario');
   else risks.push('el estrés elevado puede drenar energía y foco');
 
+  if (routineText.trim()) {
+    strengths.push('el análisis considera tu rutina real diaria/semanal');
+  }
+
   return `Tu punto fuerte: ${strengths.join(', ')}. A vigilar: ${risks.join(', ')}.`;
 };
 
-const buildTips = ({ sleep, nutrition, stress, activity }) => {
+const buildTips = ({ sleep, nutrition, stress, activity, dailyRoutine, weeklyRoutine }) => {
   const tips = [];
+  const routineText = `${dailyRoutine} ${weeklyRoutine}`.toLowerCase();
 
   if (sleep < 7) {
     tips.push({ level: 'MEDIO', area: 'SALUD', title: 'Optimización del Sueño', body: 'Sube tu descanso en bloques de 20-30 min por semana hasta llegar a 7-8 horas.' });
@@ -52,11 +60,31 @@ const buildTips = ({ sleep, nutrition, stress, activity }) => {
     tips.push({ level: 'FÁCIL', area: 'SALUD', title: 'Movimiento Diario Mínimo', body: 'Asegura 20 minutos de caminata o entrenamiento ligero para mantener inercia.' });
   }
 
+  if (hasAny(routineText, ['gimnasio', 'gym', 'fuerza', 'crossfit'])) {
+    tips.push({ level: 'MEDIO', area: 'RECUPERACIÓN', title: 'Descarga Post-Entreno', body: 'Incluye 20-30g de proteína y una ventana fija de sueño tras días de fuerza para mejorar recuperación.' });
+  }
+
+  if (hasAny(routineText, ['correr', 'running', 'cardio', 'futbol', 'baloncesto', 'partido'])) {
+    tips.push({ level: 'FÁCIL', area: 'RENDIMIENTO', title: 'Hidratación y Electrolitos', body: 'Planifica hidratación antes y después de sesiones intensas para reducir fatiga acumulada.' });
+  }
+
+  if (hasAny(routineText, ['noche', 'turno', 'turnos', 'madrugada'])) {
+    tips.push({ level: 'MEDIO', area: 'SUEÑO', title: 'Protocolo para Turnos', body: 'Usa una rutina de desconexión fija y evita pantallas 45 minutos antes de dormir, aunque sea de día.' });
+  }
+
+  if (hasAny(routineText, ['sentado', 'oficina', 'ordenador', 'computadora'])) {
+    tips.push({ level: 'FÁCIL', area: 'PRODUCTIVIDAD', title: 'Micropausas de Movilidad', body: 'Cada 60-90 minutos, haz 2-3 minutos de movilidad cervical y cadera para reducir rigidez.' });
+  }
+
+  if (hasAny(routineText, ['comidas fuera', 'delivery', 'ultraprocesado', 'ceno tarde'])) {
+    tips.push({ level: 'MEDIO', area: 'NUTRICIÓN', title: 'Planificación Anticipada', body: 'Deja 2 comidas base preparadas por adelantado para bajar decisiones impulsivas al final del día.' });
+  }
+
   if (tips.length < 3) {
     tips.push({ level: 'FÁCIL', area: 'SALUD', title: 'Monitoreo de Recuperación', body: 'Registra energía y calidad de sueño durante 2 semanas para detectar patrones.' });
   }
 
-  return tips.slice(0, 4);
+  return tips.slice(0, 6);
 };
 
 const renderTips = (tips) => {
@@ -88,7 +116,7 @@ const renderResult = (payload) => {
   summaryText.textContent = composeSummary(payload);
   coachQuote.textContent =
     normalizedScore >= 70
-      ? '“Tienes una buena base: si mejoras descanso y nutrición de forma consistente, tu siguiente salto será notable.”'
+      ? '“Tienes una buena base: afina 1-2 hábitos de tu rutina real y tu siguiente salto será notable.”'
       : '“Tu progreso depende de pequeños hábitos diarios. Prioriza sueño, comida real y control del estrés esta semana.”';
 
   scoreNumber.textContent = String(normalizedScore);
@@ -117,6 +145,8 @@ form.addEventListener('submit', (event) => {
     sleep: Number(data.get('sleep')),
     nutrition: Number(data.get('nutrition')),
     stress: Number(data.get('stress')),
+    dailyRoutine: String(data.get('dailyRoutine') || '').trim(),
+    weeklyRoutine: String(data.get('weeklyRoutine') || '').trim(),
     savedAt: new Date().toISOString()
   };
   save(payload);
@@ -127,5 +157,5 @@ const saved = loadSaved();
 if (saved) {
   renderResult(saved);
 } else {
-  renderResult({ activity: 8, sleep: 6, nutrition: 5, stress: 6 });
+  renderResult({ activity: 8, sleep: 6, nutrition: 5, stress: 6, dailyRoutine: '', weeklyRoutine: '' });
 }
