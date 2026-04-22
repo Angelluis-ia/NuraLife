@@ -7,11 +7,12 @@ NuraLife is currently in its bootstrap phase. This repository now includes a cle
 - ✅ Repository initialized
 - ✅ Contribution and collaboration guidelines added
 - ✅ Baseline CI checks added
-- ⏳ Product code pending
+- ✅ Basic static landing page added for Vercel deployments
+- ⏳ Product application module pending
 
 ## Getting started
 
-For now, this repository is documentation and process-first while the first application module is defined.
+This repository is still documentation and process-first, but now includes a minimal static landing page so deployments (for example, in Vercel) do not return 404 while the first application module is defined.
 
 ### 1) Clone repository
 
