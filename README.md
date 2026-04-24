@@ -39,6 +39,14 @@ bash scripts/ci/checks.sh
 3. Add linter/test commands for the selected stack.
 4. Extend CI to run lint/test/build.
 
+
+## Deploy rápido en Vercel
+
+1. Importa este repositorio en Vercel.
+2. En **Framework Preset**, usa **Other**.
+3. No definas Build Command ni Output Directory.
+4. Despliega; `vercel.json` reescribe cualquier ruta a `index.html` para evitar 404.
+
 ## Repository structure
 
 ```text
